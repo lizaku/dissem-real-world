@@ -11,9 +11,10 @@ indices_inv = {}
 non_overlap = set()
 all_words = {}
 print('loading data...')
-with open('clustered_words.txt') as b:
+with open('vg_clusters_labels.txt') as b:
     for line in b:
-        non_overlap.add(line.strip())
+        word, label = line.strip().split('\t')
+        non_overlap.add(word)
 with open('models/bnc_rawtext.mincount-10.win-2.vocab') as v:
     for line in v:
         col, word = line.strip().split('\t')
@@ -22,7 +23,7 @@ with open('models/bnc_rawtext.mincount-10.win-2.vocab') as v:
             indices[word] = col
             indices_inv[col] = word
             
-matrix = scipy.sparse.load_npz('models/bnc_rawtext.mincount-10.win-2.ppmi.npz')
+matrix = scipy.sparse.load_npz('models/bnc_rawtext.mincount-10.win-2.npz')
 word_matrix = None
 inds = []
 print('computing similarities...')
@@ -37,7 +38,7 @@ for word in indices:
 
 dist_out = 1-pairwise_distances(word_matrix, metric="cosine")
 i = 0
-with open('bnc_ppmi_entropix_neighbors.txt', 'w', encoding='utf-8') as n:
+with open('bnc_entropix_neighbors.txt', 'w', encoding='utf-8') as n:
     for row in dist_out:
         neighbors = heapq.nlargest(15, range(len(row)), row.take)
         n.write(indices_inv[str(inds[i])] + '\t' + ' '.join([all_words[str(x)].lower() for x in neighbors]) + '\n')

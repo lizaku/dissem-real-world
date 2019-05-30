@@ -4,7 +4,7 @@ import sys
 import codecs
 import json
 
-# Extracting neighbors from VG count-based space and BNC entropix space
+''' Extracting neighbors from VG count-based space and BNC entropix space '''
 
 obj_freq_file = 'vg_clusters_labels.txt'
 obj_freq = {}
@@ -43,9 +43,9 @@ def single_model(word, model):
                               #space2 = composes_space)
                               
 def two_models(obj_freq):
-    PATH = '../dissect_spaces/mine/'
+    PATH = 'models/'
     #load two spaces
-    genome_space = io_utils.load(PATH + 'result_attributes_f10.pkl')
+    genome_space = io_utils.load(PATH + 'VG_relations_f10.pkl')
     #bnc_space = io_utils.load(PATH + 'bnc_sample.pkl')
     bnc = {}
     with open('bnc_entropix_neighbors.txt') as n:
